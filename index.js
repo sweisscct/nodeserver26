@@ -22,8 +22,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     password: String
 });
-
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose.default);
 const User = mongoose.model("User", userSchema);
 
 app.use(session({
@@ -42,7 +41,8 @@ app.use(passport.session());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-passport.use(new Strategy.LocalStrategy(User.authenticate()));
+const LocalStrategy = require("passport-local").Strategy;
+passport.use(new LocalStrategy(User.authenticate()));
 
 app.get("/", (req, res) => {
     console.log("Yay, a visitor!");
