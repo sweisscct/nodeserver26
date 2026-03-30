@@ -50,6 +50,27 @@ app.get("/", (req, res) => {
     res.sendFile("index.html", {root: __dirname});
 });
 
+app.get("/create-account", (req, res) => {
+    if (req.isAuthenticated()) res.redirect("/chat");
+    res.sendFile("create-account.html", {root: __dirname});
+});
+
+app.post("/create-account", (req, res) => {
+    if (req.isAuthenticated()) res.redirect("/chat");
+    User.register(new User({
+        username: req.body.username
+    }), req.body.password, (err, user) => {
+        if (err) {
+            console.log(err);
+            res.send("Error");
+        }
+        passport.authenticate('local')(req, res, () => {
+            res.redirect("/chat");
+        })
+    }
+)
+});
+
 app.get("/login", (req, res) => {
     res.sendFile("login.html", {root: __dirname});
 });
