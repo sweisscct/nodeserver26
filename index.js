@@ -61,4 +61,5 @@ app.post("/login", (req, res) => {
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Listening on port: ${PORT}`); 
+    console.log(`http://localhost:${PORT}`);
 });
